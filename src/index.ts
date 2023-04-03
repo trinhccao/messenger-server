@@ -1,5 +1,6 @@
 import express from 'express'
 import mongoose from 'mongoose'
+import cors from 'cors'
 import dotenv from 'dotenv'
 import router from './router/root'
 
@@ -17,4 +18,5 @@ mongoose
   .catch((err) => console.log('MongoDB error: ', err))
 
 app.listen(process.env.APP_PORT)
+app.use(cors())
 app.use(router)
