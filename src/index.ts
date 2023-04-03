@@ -1,6 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
+import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import router from './router/root'
 
@@ -19,4 +20,5 @@ mongoose
 
 app.listen(process.env.APP_PORT)
 app.use(cors())
+app.use(bodyParser.json())
 app.use(router)
