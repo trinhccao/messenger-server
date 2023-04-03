@@ -19,6 +19,7 @@ mongoose
   .catch((err) => console.log('MongoDB error: ', err))
 
 app.listen(process.env.APP_PORT)
+app.disable('x-powered-by')
 app.use(cors())
 app.use(bodyParser.json())
 app.use(router)
