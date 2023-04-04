@@ -20,7 +20,7 @@ const userController = {
         ? res.json(user)
         : res.status(404).json({ message: 'User not found' })
     } catch (err) {
-      res.sendStatus(500)
+      res.status(404).json({ message: 'User not found' })
     }
   },
 

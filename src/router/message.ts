@@ -1,9 +1,9 @@
 import express from 'express'
 
-const router = express.Router()
+const message = express.Router()
 
-router.get('/', async (req, res) => {
+message.get('/', async (req, res) => {
   res.send('messages')
 })
 
-export default router
+export default message
