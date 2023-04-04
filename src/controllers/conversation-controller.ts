@@ -22,7 +22,7 @@ const conversationController = {
   },
 
   create: async (data: ConversationSchema) => {
-    return  await Conversation.create(data)
+    return await Conversation.create(data)
   }
 }
 
