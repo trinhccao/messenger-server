@@ -2,6 +2,10 @@ import mongoose from 'mongoose'
 import { ConversationSchema } from '../interfaces/ConversationSchema'
 
 const schema = new mongoose.Schema<ConversationSchema>({
+  id: {
+    type: String,
+    unique: true,
+  },
   members: {
     type: [String],
     default: [],
