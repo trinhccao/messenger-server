@@ -1,13 +1,16 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import User from '../models/User'
+import { JwtPayload } from '../interfaces/JwtPayload'
 
 const authController = {
   authenticate: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const authorization = (req.headers.authorization || '')
       const secret = process.env.JWT_SECRET as string
-      jwt.verify(authorization.replace(/^Bearer\s/, ''), secret)
+      const payload = jwt.verify(authorization.replace(/^Bearer\s/, ''), secret)
+      const request = req as any
+      request.user = (payload as JwtPayload).user
       next()
     } catch (err) {
       res.header('WWW-Authenticate', 'Bearer').sendStatus(401)

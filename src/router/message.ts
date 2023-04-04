@@ -1,9 +1,8 @@
 import express from 'express'
+import messageController from '../controllers/message-controller'
 
 const message = express.Router()
 
-message.get('/', async (req, res) => {
-  res.send('messages')
-})
+message.get('/', messageController.getAll)
 
 export default message
