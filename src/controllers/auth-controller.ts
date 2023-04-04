@@ -5,9 +5,9 @@ import User from '../models/User'
 const authController = {
   authenticate: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const authorization = req.headers.authorization || ''
+      const authorization = (req.headers.authorization || '')
       const secret = process.env.JWT_SECRET as string
-      jwt.verify(authorization, secret)
+      jwt.verify(authorization.replace(/^Bearer\s/, ''), secret)
       next()
     } catch (err) {
       res.header('WWW-Authenticate', 'Bearer').sendStatus(401)
