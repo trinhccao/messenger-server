@@ -1,5 +1,5 @@
-import { UserSchema } from "./UserSchema";
+import { UserInterface } from './UserInterface'
 
 export interface JwtPayload {
-  user: Omit<UserSchema, 'password'> & { _id: string }
+  user: UserInterface
 }

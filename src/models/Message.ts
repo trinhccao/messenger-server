@@ -5,7 +5,6 @@ const schema = new mongoose.Schema<MessageSchema>({
   conversationId: {
     type: String,
     required: true,
-    unique: true,
   },
   userId: {
     type: String,
