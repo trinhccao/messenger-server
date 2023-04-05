@@ -14,7 +14,11 @@ const schema = new mongoose.Schema<MessageSchema>({
   content: {
     type: String,
     required: true,
-  }
+  },
+  createdAt: {
+    type: Date,
+    required: true,
+  },
 })
 
 export default mongoose.model('Message', schema) 

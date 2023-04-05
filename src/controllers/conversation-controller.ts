@@ -22,8 +22,11 @@ const conversationController = {
   },
 
   create: async (senderId: string, receiverId: string): Promise<string> => {
+    const concat = [senderId, receiverId]
+      .sort()
+      .reduce((one, two) => (one + two), '')
     const conversationId = createHash('md5')
-      .update(receiverId + senderId)
+      .update(concat)
       .digest('hex')
 
     const isExist = await Conversation.exists({ id: conversationId })
