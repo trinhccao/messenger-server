@@ -1,5 +1,14 @@
 import mongoose from 'mongoose'
-import { UserSchema } from '../interfaces/UserSchema'
+
+export interface UserSchema {
+	username: string
+	firstName: string
+	lastName: string
+	password: string
+	createdAt: Date
+	updatedAt: Date
+	avatar?: string
+}
 
 const schema = new mongoose.Schema<UserSchema>({
   username: {

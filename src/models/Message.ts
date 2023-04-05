@@ -1,8 +1,14 @@
 import mongoose from 'mongoose'
-import { MessageSchema } from '../interfaces/MessageSchema'
+
+export interface MessageSchema {
+	threadId: string
+	userId: string
+	content: string
+	createdAt: Date
+}
 
 const schema = new mongoose.Schema<MessageSchema>({
-  conversationId: {
+  threadId: {
     type: String,
     required: true,
   },

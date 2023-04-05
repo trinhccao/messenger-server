@@ -1,16 +1,22 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import User from '../models/User'
-import { JwtPayload } from '../interfaces/JwtPayload'
+import { IJwtUser } from '../interfaces/IJwtUser'
 
 const authController = {
   authenticate: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const authorization = (req.headers.authorization || '')
+      const authorization = req.headers.authorization
+
+      if (!authorization) {
+        throw new Error('Authorization empty')
+      }
+
       const secret = process.env.JWT_SECRET as string
       const payload = jwt.verify(authorization.replace(/^Bearer\s/, ''), secret)
       const request = req as any
-      request.user = (payload as JwtPayload).user
+      request.user = (payload as IJwtUser).user
+
       next()
     } catch (err) {
       res.header('WWW-Authenticate', 'Bearer').sendStatus(401)
@@ -21,12 +27,14 @@ const authController = {
     try {
       const { username, password } = req.body
       const user = await User.findOne({ username, password }, { password: 0 })
+
       if (!user) {
-        return res.header('WWW-Authenticate', 'Bearer').sendStatus(401)
+        throw new Error()
       }
+
       const secret = process.env.JWT_SECRET as string
       const token = jwt.sign({ user: user.toObject() }, secret)
-      res.json({ token: token, tokenType: 'Bearer' })
+      res.json({ token: token, tokenType: 'Bearer', user })
     } catch (err) {
       res.header('WWW-Authenticate', 'Bearer').sendStatus(401)
     }

@@ -1,9 +1,16 @@
 import mongoose from 'mongoose'
-import { ConversationSchema } from '../interfaces/ConversationSchema'
 
-const schema = new mongoose.Schema<ConversationSchema>({
+export interface ThreadSchema {
+  id: string
+  members: string[]
+  createdAt: Date
+  updatedAt: Date
+}
+
+const schema = new mongoose.Schema<ThreadSchema>({
   id: {
     type: String,
+    required: true,
     unique: true,
   },
   members: {
@@ -17,7 +24,7 @@ const schema = new mongoose.Schema<ConversationSchema>({
   updatedAt: {
     type: Date,
     required: true,
-  }
+  },
 })
 
-export default mongoose.model('Conversation', schema) 
+export default mongoose.model('Thread', schema) 

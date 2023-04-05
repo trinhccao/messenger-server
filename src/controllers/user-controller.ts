@@ -15,12 +15,10 @@ const userController = {
 
   getById: async (req: Request, res: Response) => {
     try {
-      const user = await User.findById(req.params.userId, noPasword)
-      user
-        ? res.json(user)
-        : res.status(404).json({ message: 'User not found' })
+      const user = await User.findById(req.params.id, noPasword)
+      user ? res.json(user) : res.sendStatus(404)
     } catch (err) {
-      res.status(404).json({ message: 'User not found' })
+      res.sendStatus(404)
     }
   },
 
@@ -28,9 +26,9 @@ const userController = {
     try {
       const date = new Date()
       await User.create({ ...req.body, createdAt: date, updatedAt: date })
-      res.status(201).json({ message: 'User created' })
+      res.sendStatus(201)
     } catch (err) {
-      res.status(400).json({ message: 'Bad request' })
+      res.sendStatus(400)
     }
   },
 }
