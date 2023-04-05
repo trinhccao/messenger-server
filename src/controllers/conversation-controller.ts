@@ -13,11 +13,11 @@ const conversationController = {
       const conversationId = req.params.conversationId
       const conversation = await Conversation.findOne({ id: conversationId })
       if (!conversation) {
-        return res.status(404).json({ message: 'Conversation not found' })
+        return res.sendStatus(404)
       }
       res.json(conversation)
     } catch (err) {
-      res.status(404).json({ message: 'Conversation not found' })
+      res.sendStatus(404)
     }
   },
 
