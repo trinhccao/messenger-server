@@ -23,8 +23,7 @@ const threadController = {
 
   theads: async (req: Request, res: Response) => {
     try {
-      const request = req as verifiedRequest
-      const threads = await Thread.find({ members: request.user._id })
+      const threads = await Thread.find({})
       res.json(threads)
     } catch (err) {
       res.sendStatus(400)
