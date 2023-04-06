@@ -5,9 +5,9 @@ import DirectMessage from '../models/DirectMessage'
 
 const createDirect = async (userIds: string[]) => {
   const direct = await Direct.create({
-    users: userIds,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    members: userIds,
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
   })
   return direct
 }
@@ -20,7 +20,7 @@ const directController = {
         return res.status(404).json({ message: 'Direct not found' })
       }
       const user = (req as verifiedRequest).user
-      if (!direct.users.includes(user._id)) {
+      if (!direct.members.includes(user._id)) {
         return res.sendStatus(403)
       }
       next()
@@ -32,7 +32,7 @@ const directController = {
   directs: async (req: Request, res: Response) => {
     try {
       const user = (req as verifiedRequest).user
-      const directs = await Direct.find({ users: user._id })
+      const directs = await Direct.find({ members: user._id })
       res.json(directs)
     } catch (err) {
       res.sendStatus(400)
@@ -51,7 +51,7 @@ const directController = {
       const receiverId = req.params.id
 
       let direct = await Direct.findOne({
-        users: { $all: [sender._id, receiverId] }
+        members: { $all: [sender._id, receiverId] }
       })
 
       if (!direct) {
@@ -61,7 +61,7 @@ const directController = {
       await DirectMessage.create({
         directId: direct._id,
         userId: sender._id,
-        createdAt: new Date(),
+        createdAt: Date.now(),
         content: req.body.message,
       })
 

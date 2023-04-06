@@ -28,8 +28,8 @@ const userController = {
         lastName,
         password,
         avatar,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        createdAt: Date.now(),
+        updatedAt: Date.now()
       })
       res.sendStatus(201)
     } catch (err) {

@@ -23,7 +23,8 @@ const threadController = {
 
   theads: async (req: Request, res: Response) => {
     try {
-      const threads = await Thread.find({})
+      const user = (req as verifiedRequest).user
+      const threads = await Thread.find({ members: user._id })
       res.json(threads)
     } catch (err) {
       res.sendStatus(400)
@@ -37,8 +38,8 @@ const threadController = {
       const thread = await Thread.create({
         name: threadName,
         members: [request.user._id],
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
       })
       res.json(thread)
     } catch (err) {
@@ -67,7 +68,7 @@ const threadController = {
         threadId: req.params.id,
         userId: user._id,
         content: req.body.message,
-        createdAt: new Date(),
+        createdAt: Date.now(),
       })
       res.sendStatus(201)
     } catch (err) {

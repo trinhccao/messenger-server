@@ -4,7 +4,7 @@ export interface ThreadMessageSchema {
   threadId: string
   userId: string
   content: string
-  createdAt: Date
+  createdAt: number
 }
 
 const schema = new mongoose.Schema<ThreadMessageSchema>({
@@ -21,7 +21,7 @@ const schema = new mongoose.Schema<ThreadMessageSchema>({
     required: true,
   },
   createdAt: {
-    type: Date,
+    type: Number,
     required: true,
   },
 })

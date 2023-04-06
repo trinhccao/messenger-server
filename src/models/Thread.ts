@@ -3,8 +3,8 @@ import mongoose from 'mongoose'
 export interface ThreadSchema {
   name: string
   members: string[]
-  createdAt: Date
-  updatedAt: Date
+  createdAt: number
+  updatedAt: number
 }
 
 const schema = new mongoose.Schema<ThreadSchema>({
@@ -17,11 +17,11 @@ const schema = new mongoose.Schema<ThreadSchema>({
     default: [],
   },
   createdAt: {
-    type: Date,
+    type: Number,
     required: true,
   },
   updatedAt: {
-    type: Date,
+    type: Number,
     required: true,
   },
 })

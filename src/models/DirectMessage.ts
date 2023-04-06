@@ -4,7 +4,7 @@ export interface DirectMessageSchema {
   directId: string
   userId: string
   content: string
-  createdAt: Date
+  createdAt: number
 }
 
 const schema = new mongoose.Schema<DirectMessageSchema>({
@@ -21,7 +21,7 @@ const schema = new mongoose.Schema<DirectMessageSchema>({
     required: true,
   },
   createdAt: {
-    type: Date,
+    type: Number,
     required: true,
   },
 })

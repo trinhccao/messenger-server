@@ -5,8 +5,8 @@ export interface UserSchema {
 	firstName: string
 	lastName: string
 	password: string
-	createdAt: Date
-	updatedAt: Date
+	createdAt: number
+	updatedAt: number
 	avatar?: string
 }
 
@@ -29,11 +29,11 @@ const schema = new mongoose.Schema<UserSchema>({
     required: true,
   },
   createdAt: {
-    type: Date,
+    type: Number,
     required: true,
   },
   updatedAt: {
-    type: Date,
+    type: Number,
     required: true,
   },
   avatar: String,
