@@ -7,14 +7,14 @@ import { verifiedRequest } from '../interfaces/VerifiedRequest'
 const authController = {
   authenticate: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const authorization = req.headers.authorization
+      const { authorization } = req.headers
 
       if (!authorization) {
-        throw new Error('Authorization empty')
+        return res.status(400).json({ message: 'Authorization is empty' })
       }
 
-      const secret = process.env.JWT_SECRET as string
-      const payload = jwt.verify(authorization.replace(/^Bearer\s/, ''), secret)
+      const token = authorization.replace(/^Bearer\s/, '')
+      const payload = jwt.verify(token, process.env.JWT_SECRET as string)
       const request = req as verifiedRequest
       request.user = (payload as IJwtPayload).user
 
@@ -30,7 +30,7 @@ const authController = {
       const user = await User.findOne({ username, password }, { password: 0 })
 
       if (!user) {
-        throw new Error()
+        return res.header('WWW-Authenticate', 'Bearer').sendStatus(401)
       }
 
       const secret = process.env.JWT_SECRET as string

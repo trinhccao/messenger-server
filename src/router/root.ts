@@ -5,7 +5,7 @@ import thread from './thread'
 
 const router = express.Router()
 
-router.use('/', authRouter)
+router.use(authRouter)
 router.use('/users', user)
 router.use('/threads', thread)
 
