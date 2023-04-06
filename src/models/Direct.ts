@@ -1,18 +1,12 @@
 import mongoose from 'mongoose'
 
 export interface DirectSchema {
-  id: string
   users: string[]
   createdAt: Date
   updatedAt: Date
 }
 
 const schema = new mongoose.Schema<DirectSchema>({
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   users: {
     type: [String],
     required: true,
