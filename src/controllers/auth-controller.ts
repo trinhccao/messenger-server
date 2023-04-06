@@ -30,7 +30,7 @@ const authController = {
       const user = await User.findOne({ username, password }, { password: 0 })
 
       if (!user) {
-        return res.header('WWW-Authenticate', 'Bearer').sendStatus(401)
+        throw new Error()
       }
 
       const secret = process.env.JWT_SECRET as string
