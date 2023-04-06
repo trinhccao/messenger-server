@@ -10,7 +10,7 @@ const authController = {
       const { authorization } = req.headers
 
       if (!authorization) {
-        return res.status(400).json({ message: 'Authorization is empty' })
+        throw new Error('Authorization empty')
       }
 
       const token = authorization.replace(/^Bearer\s/, '')
