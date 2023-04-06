@@ -4,7 +4,7 @@ import User from '../models/User'
 const noPasword = { password: 0 }
 
 const userController = {
-  getAll: async (req: Request, res: Response) => {
+  read: async (req: Request, res: Response) => {
     try {
       const users = await User.find({}, noPasword)
       res.json(users)
@@ -13,7 +13,7 @@ const userController = {
     }
   },
 
-  getById: async (req: Request, res: Response) => {
+  readId: async (req: Request, res: Response) => {
     try {
       const user = await User.findById(req.params.id, noPasword)
       user ? res.json(user) : res.sendStatus(404)

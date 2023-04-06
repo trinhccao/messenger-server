@@ -1,17 +1,16 @@
 import mongoose from 'mongoose'
 
 export interface ThreadSchema {
-  id: string
+  name: string
   members: string[]
   createdAt: Date
   updatedAt: Date
 }
 
 const schema = new mongoose.Schema<ThreadSchema>({
-  id: {
+  name: {
     type: String,
     required: true,
-    unique: true,
   },
   members: {
     type: [String],

@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import User from '../models/User'
-import { IJwtUser } from '../interfaces/IJwtUser'
+import { IJwtPayload } from '../interfaces/IJwtPayload'
+import { verifiedRequest } from '../interfaces/VerifiedRequest'
 
 const authController = {
   authenticate: async (req: Request, res: Response, next: NextFunction) => {
@@ -14,8 +15,8 @@ const authController = {
 
       const secret = process.env.JWT_SECRET as string
       const payload = jwt.verify(authorization.replace(/^Bearer\s/, ''), secret)
-      const request = req as any
-      request.user = (payload as IJwtUser).user
+      const request = req as verifiedRequest
+      request.user = (payload as IJwtPayload).user
 
       next()
     } catch (err) {

@@ -1,13 +1,13 @@
 import mongoose from 'mongoose'
 
-export interface MessageSchema {
-	threadId: string
-	userId: string
-	content: string
-	createdAt: Date
+export interface ThreadMessageSchema {
+  threadId: string
+  userId: string
+  content: string
+  createdAt: Date
 }
 
-const schema = new mongoose.Schema<MessageSchema>({
+const schema = new mongoose.Schema<ThreadMessageSchema>({
   threadId: {
     type: String,
     required: true,
@@ -26,4 +26,4 @@ const schema = new mongoose.Schema<MessageSchema>({
   },
 })
 
-export default mongoose.model('Message', schema) 
+export default mongoose.model('ThreadMessage', schema) 

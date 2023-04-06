@@ -3,8 +3,8 @@ import userController from '../controllers/user-controller'
 
 const user = express.Router()
 
-user.get('/', userController.getAll)
-user.get('/:id', userController.getById)
+user.get('/', userController.read)
 user.post('/', userController.create)
+user.get('/:id', userController.readId)
 
 export default user
