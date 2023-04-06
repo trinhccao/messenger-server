@@ -64,9 +64,8 @@ const threadController = {
   createTheadMessages: async (req: Request, res: Response) => {
     try {
       const user = (req as verifiedRequest).user
-      const threadId = req.params.id
       await ThreadMessage.create({
-        threadId,
+        threadId: req.params.id,
         userId: user._id,
         content: req.body.message,
         createdAt: new Date(),
