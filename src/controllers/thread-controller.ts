@@ -55,17 +55,6 @@ const threadController = {
     const threadId = req.params.id
     const messages = await messageController.messages(threadId)
     res.json(messages)
-  },
-
-  createMessage: async (req: Request, res: Response) => {
-    const userId = (req as verifiedRequest).user._id
-    await messageController.create({
-      threadId: req.params.id,
-      userId,
-      content: req.body.message,
-      createdAt: Date.now(),
-    })
-    res.sendStatus(201)
   }
 }
 
