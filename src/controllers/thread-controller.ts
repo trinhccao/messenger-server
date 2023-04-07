@@ -1,14 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
 import Thread from '../models/Thread'
 import { verifiedRequest } from '../interfaces/VerifiedRequest'
-import ThreadMessage from '../models/ThreadMessage'
 
 const threadController = {
-  checkThreadPermission: async (req: Request, res: Response, next: NextFunction) => {
+  verify: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const thread = await Thread.findById(req.params.id)
       if (!thread) {
-        return res.status(404).json({ message: 'Thread not found' })
+        return res.sendStatus(404)
       }
       const user = (req as verifiedRequest).user
       if (!thread.members.includes(user._id)) {
@@ -31,12 +30,11 @@ const threadController = {
     }
   },
 
-  createThreads: async (req: Request, res: Response) => {
+  create: async (req: Request, res: Response) => {
     try {
       const request = req as verifiedRequest
-      const threadName = req.body.name
       const thread = await Thread.create({
-        name: threadName,
+        name: req.body.name,
         members: [request.user._id],
         createdAt: Date.now(),
         updatedAt: Date.now(),
@@ -47,33 +45,9 @@ const threadController = {
     }
   },
 
-  readThread: async (req: Request, res: Response) => {
+  get: async (req: Request, res: Response) => {
     const thread = (req as any).thead
     res.json(thread)
-  },
-
-  readTheadMessages: async (req: Request, res: Response) => {
-    try {
-      const messages = await ThreadMessage.find({ threadId: req.params.id })
-      res.json(messages)
-    } catch (err) {
-      res.sendStatus(500)
-    }
-  },
-
-  createTheadMessages: async (req: Request, res: Response) => {
-    try {
-      const user = (req as verifiedRequest).user
-      await ThreadMessage.create({
-        threadId: req.params.id,
-        userId: user._id,
-        content: req.body.message,
-        createdAt: Date.now(),
-      })
-      res.sendStatus(201)
-    } catch (err) {
-      res.sendStatus(500)
-    }
   }
 }
 

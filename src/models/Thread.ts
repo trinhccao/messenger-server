@@ -1,16 +1,16 @@
 import mongoose from 'mongoose'
 
 export interface ThreadSchema {
-  name: string
+  name?: string
   members: string[]
   createdAt: number
   updatedAt: number
+  avatar?: string
 }
 
 const schema = new mongoose.Schema<ThreadSchema>({
   name: {
     type: String,
-    required: true,
   },
   members: {
     type: [String],
@@ -23,6 +23,9 @@ const schema = new mongoose.Schema<ThreadSchema>({
   updatedAt: {
     type: Number,
     required: true,
+  },
+  avatar: {
+    type: String,
   },
 })
 
