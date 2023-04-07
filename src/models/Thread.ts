@@ -6,6 +6,7 @@ export interface ThreadSchema {
   createdAt: number
   updatedAt: number
   avatar?: string
+  type: string
 }
 
 const schema = new mongoose.Schema<ThreadSchema>({
@@ -27,6 +28,10 @@ const schema = new mongoose.Schema<ThreadSchema>({
   avatar: {
     type: String,
   },
+  type: {
+    type: String,
+    required: true,
+  }
 })
 
 export default mongoose.model('Thread', schema) 

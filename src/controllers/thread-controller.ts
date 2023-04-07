@@ -39,8 +39,9 @@ const threadController = {
         members: [request.user._id],
         createdAt: Date.now(),
         updatedAt: Date.now(),
+        type: req.body.type,
       })
-      res.json(thread)
+      res.status(201).json(thread)
     } catch (err) {
       res.sendStatus(400)
     }
