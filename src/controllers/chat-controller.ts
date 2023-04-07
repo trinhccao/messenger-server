@@ -26,7 +26,7 @@ const chatController = {
         return res.json(direct)
       }
 
-      res.sendStatus(404)
+      res.json(null)
     } catch (err) {
       res.sendStatus(400)
     }
