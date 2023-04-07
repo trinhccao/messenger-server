@@ -8,5 +8,6 @@ thread.get('/', threadController.theads)
 thread.post('/', threadController.create)
 thread.use('/:id', threadController.verify)
 thread.get('/:id', threadController.get)
+thread.get('/:id/messages', threadController.messages)
 
 export default thread
