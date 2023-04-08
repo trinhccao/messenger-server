@@ -1,12 +1,17 @@
 import mongoose from 'mongoose'
 
+export enum ThreadTypes {
+  Direct = 'direct',
+  Group = 'group'
+}
+
 export interface ThreadSchema {
   name?: string
   members: string[]
   createdAt: number
   updatedAt: number
   avatar?: string
-  type: string
+  type: ThreadTypes
 }
 
 const schema = new mongoose.Schema<ThreadSchema>({

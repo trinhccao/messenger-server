@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
-import Thread from '../models/Thread'
+import Thread, { ThreadTypes } from '../models/Thread'
 import { verifiedRequest } from '../interfaces/VerifiedRequest'
 import messageController from './message-controller'
+import Message from '../models/Message'
 
 const threadController = {
   verify: async (req: Request, res: Response, next: NextFunction) => {
@@ -25,7 +26,18 @@ const threadController = {
     try {
       const user = (req as verifiedRequest).user
       const threads = await Thread.find({ members: user._id })
-      res.json(threads)
+
+      const filtered: typeof threads = []
+      for await (const thread of threads) {
+        if (thread.type !== ThreadTypes.Direct) {
+          filtered.push(thread)
+          continue
+        }
+        const message = await Message.findOne({ threadId: thread._id })
+        message && filtered.push(thread)
+      }
+
+      res.json(filtered)
     } catch (err) {
       res.sendStatus(400)
     }
