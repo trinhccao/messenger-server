@@ -34,9 +34,15 @@ const threadController = {
   create: async (req: Request, res: Response) => {
     try {
       const request = req as verifiedRequest
+      const members = [request.user._id]
+
+      if (req.body.type === 'direct') {
+        members.push(req.body.receiverId)
+      }
+
       const thread = await Thread.create({
         name: req.body.name,
-        members: [request.user._id],
+        members,
         createdAt: Date.now(),
         updatedAt: Date.now(),
         type: req.body.type,
