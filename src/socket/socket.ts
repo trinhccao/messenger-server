@@ -20,7 +20,6 @@ class SocketIO {
       if (!thread.members.includes(userid) || userid === senderId) {
         return
       }
-      console.log(message)
       socket.emit('message', message)
     })
   }
