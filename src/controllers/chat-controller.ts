@@ -65,6 +65,10 @@ const chatController = {
         content: messageContent,
         createdAt: Date.now(),
       })
+
+      thread.updatedAt = Date.now()
+      thread.save()
+
       res.sendStatus(201)
     } catch (err) {
       res.sendStatus(500)

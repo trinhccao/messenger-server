@@ -37,7 +37,7 @@ const threadController = {
         message && filtered.push(thread)
       }
 
-      res.json(filtered)
+      res.json(filtered.sort((a, b) => b.updatedAt - a.updatedAt))
     } catch (err) {
       res.sendStatus(400)
     }
