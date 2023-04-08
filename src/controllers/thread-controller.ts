@@ -74,7 +74,14 @@ const threadController = {
     const threadId = req.params.id
     const messages = await messageController.messages(threadId)
     res.json(messages)
-  }
+  },
+
+  latestMessage: async (req: Request, res: Response) => {
+    const threadId = req.params.id
+    const messages = await messageController.messages(threadId)
+    const sorted = messages.sort((a, b) => b.createdAt - a.createdAt)
+    res.json(sorted[0])
+  },
 }
 
 export default threadController

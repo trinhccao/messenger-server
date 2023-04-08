@@ -9,5 +9,6 @@ thread.post('/', threadController.create)
 thread.use('/:id', threadController.verify)
 thread.get('/:id', threadController.get)
 thread.get('/:id/messages', threadController.messages)
+thread.get('/:id/messages/latest', threadController.latestMessage)
 
 export default thread
