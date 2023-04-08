@@ -6,6 +6,7 @@ export enum ThreadTypes {
 }
 
 export interface ThreadSchema {
+  _id: string
   name?: string
   members: string[]
   createdAt: number

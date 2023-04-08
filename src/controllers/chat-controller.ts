@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import Thread, { ThreadTypes } from '../models/Thread'
 import { verifiedRequest } from '../interfaces/VerifiedRequest'
 import messageController from './message-controller'
+import SocketIO from '../socket/socket'
 
 const chatController = {
   getThread: async (req: Request, res: Response) => {
@@ -59,7 +60,7 @@ const chatController = {
         return res.sendStatus(400)
       }
 
-      await messageController.create({
+      const message = await messageController.create({
         threadId: thread.id,
         userId,
         content: messageContent,
@@ -68,6 +69,8 @@ const chatController = {
 
       thread.updatedAt = Date.now()
       thread.save()
+
+      SocketIO.instance.dispatchChat({ thread, message, senderId: userId })
 
       res.sendStatus(201)
     } catch (err) {

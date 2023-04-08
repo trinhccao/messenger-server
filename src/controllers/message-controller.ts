@@ -6,7 +6,7 @@ const messageController = {
   },
 
   create: async (data: MessageSchema) => {
-    await Message.create(data)
+    return await Message.create(data)
   }
 }
 
