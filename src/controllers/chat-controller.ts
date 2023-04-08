@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import Thread from '../models/Thread'
+import Thread, { ThreadTypes } from '../models/Thread'
 import { verifiedRequest } from '../interfaces/VerifiedRequest'
 import messageController from './message-controller'
 
@@ -20,7 +20,8 @@ const chatController = {
       const direct = await Thread.findOne({
         members: {
           $all: [userId, targetId]
-        }
+        },
+        type: ThreadTypes.Direct,
       })
       if (direct) {
         return res.json(direct)
