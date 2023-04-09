@@ -26,6 +26,10 @@ class SocketIO {
 
       const user = JSON.parse(userString as string) as UserSchema
 
+      if (this.#onlines.find((online) => online.user._id === user._id)) {
+        return socket.disconnect()
+      }
+
       socket.emit('onlines', this.#onlines.map((item) => item.user))
       this.#notify('online', user)
       this.#onlines.push({ user: user, socket })
@@ -48,15 +52,13 @@ class SocketIO {
 
   dispatchChat(data: { thread: ThreadSchema, message: MessageSchema }) {
     const { thread, message } = data
-    const sockets = [...this.#io.sockets.sockets.values()]
-    sockets.forEach((socket) => {
-      const socketId = socket.handshake.headers.userid as string
-      if (socketId === message.userId) {
+    this.#onlines.forEach(({ user, socket }) => {
+      if (user._id === message.userId) {
         return
       }
       if (
         thread.scopes?.includes(ThreadScopes.Public) ||
-        thread.members.includes(socketId)
+        thread.members.includes(user._id)
       ) {
         socket.emit('message', message)
       }
