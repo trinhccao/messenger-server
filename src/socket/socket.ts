@@ -1,7 +1,7 @@
 import { Server as HttpServer } from 'node:http'
 import { Server as SocketServer } from 'socket.io'
 import { MessageSchema } from '../models/Message'
-import { ThreadSchema } from '../models/Thread'
+import { ThreadSchema, ThreadScopes } from '../models/Thread'
 
 class SocketIO {
   #io: SocketServer
@@ -12,15 +12,20 @@ class SocketIO {
     SocketIO.instance = this
   }
 
-  dispatchChat(data: { thread: ThreadSchema, message: MessageSchema, senderId: string }) {
-    const { thread, senderId, message } = data
+  dispatchChat(data: { thread: ThreadSchema, message: MessageSchema }) {
+    const { thread, message } = data
     const sockets = [...this.#io.sockets.sockets.values()]
     sockets.forEach((socket) => {
-      const userid = socket.handshake.headers.userid as string
-      if (!thread.members.includes(userid) || userid === senderId) {
+      const socketId = socket.handshake.headers.userid as string
+      if (socketId === message.userId) {
         return
       }
-      socket.emit('message', message)
+      if (
+        thread.scopes?.includes(ThreadScopes.Public) ||
+        thread.members.includes(socketId)
+      ) {
+        socket.emit('message', message)
+      }
     })
   }
 }
