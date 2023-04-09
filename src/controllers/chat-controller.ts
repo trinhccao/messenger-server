@@ -72,7 +72,7 @@ const chatController = {
 
       SocketIO.instance.dispatchChat({ thread, message, senderId: userId })
 
-      res.sendStatus(201)
+      res.status(201).json(message)
     } catch (err) {
       res.sendStatus(500)
     }
