@@ -9,6 +9,26 @@ const userController = {
     try {
       const userId = (req as verifiedRequest).user._id
       const users = await User.find({ _id: { $ne: userId } }, noPasword)
+
+      const query = req.query.name
+      if (typeof query === 'string') {
+        const trimmed = query.trim()
+        if (!trimmed) {
+          return res.json([])
+        }
+        const regex = new RegExp(trimmed, 'i')
+        const result = users
+          .filter((user) => `${user.firstName} ${user.lastName}`.match(regex))
+          .sort((a, b) => {
+            const aFullName = `${a.firstName} ${a.lastName}`
+            const bFullName = `${b.firstName} ${b.lastName}`
+            const aIndex = aFullName.match(regex)?.index as number
+            const bIndex = bFullName.match(regex)?.index as number
+            return aIndex - bIndex
+          })
+        return res.json(result)
+      }
+
       res.json(users)
     } catch (err) {
       res.sendStatus(500)
