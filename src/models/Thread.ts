@@ -5,6 +5,10 @@ export enum ThreadTypes {
   Group = 'group'
 }
 
+export enum ThreadScopes {
+  Public = 'public'
+}
+
 export interface ThreadSchema {
   _id: string
   name?: string
@@ -13,6 +17,7 @@ export interface ThreadSchema {
   updatedAt: number
   avatar?: string
   type: ThreadTypes
+  scopes?: ThreadScopes[]
 }
 
 const schema = new mongoose.Schema<ThreadSchema>({
@@ -37,6 +42,10 @@ const schema = new mongoose.Schema<ThreadSchema>({
   type: {
     type: String,
     required: true,
+  },
+  scopes: {
+    type: [String],
+    default: [],
   }
 })
 

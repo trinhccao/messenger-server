@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import Message, { MessageSchema } from '../models/Message'
 import { verifiedRequest } from '../interfaces/VerifiedRequest'
-import Thread from '../models/Thread'
+import Thread, { ThreadScopes } from '../models/Thread'
 
 const messageController = {
   messages: async (threadId: string) => {
@@ -16,7 +16,7 @@ const messageController = {
     try {
       const userId = (req as verifiedRequest).user._id
 
-      const threads = await Thread.find({ members: userId }, { id: 1 })
+      const threads = await Thread.find({ $or: [{ members: userId }, { scopes: ThreadScopes.Public }] }, { id: 1 })
       const threadIds = threads.map((item) => item._id.toString())
       const messages = await Message.find({ threadId: threadIds })
 

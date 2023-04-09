@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import Thread, { ThreadTypes } from '../models/Thread'
+import Thread, { ThreadScopes, ThreadTypes } from '../models/Thread'
 import { verifiedRequest } from '../interfaces/VerifiedRequest'
 import messageController from './message-controller'
 import Message from '../models/Message'
@@ -12,7 +12,10 @@ const threadController = {
         return res.sendStatus(404)
       }
       const user = (req as verifiedRequest).user
-      if (!thread.members.includes(user._id)) {
+      if (
+        !thread.members.includes(user._id) &&
+        !thread.scopes?.includes(ThreadScopes.Public)
+      ) {
         return res.sendStatus(403)
       }
       (req as any).thead = thread

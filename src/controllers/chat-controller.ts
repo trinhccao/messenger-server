@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import Thread, { ThreadTypes } from '../models/Thread'
+import Thread, { ThreadScopes, ThreadTypes } from '../models/Thread'
 import { verifiedRequest } from '../interfaces/VerifiedRequest'
 import messageController from './message-controller'
 import SocketIO from '../socket/socket'
@@ -41,7 +41,10 @@ const chatController = {
       if (!thread) {
         return res.sendStatus(400)
       }
-      if (!thread.members.includes(userId)) {
+      if (
+        !thread.members.includes(userId) &&
+        !thread.scopes?.includes(ThreadScopes.Public)
+      ) {
         return res.sendStatus(403)
       }
       next()
