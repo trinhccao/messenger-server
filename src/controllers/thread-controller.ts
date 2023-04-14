@@ -9,15 +9,20 @@ const threadController = {
     try {
       const currentUser = (req as AuthorizedRequest).user
       const dataThreads: DataThread[] = []
-      const threads = await Thread.find({ members: currentUser._id })
+      const threads = await Thread.find({ members: currentUser })
 
       for await (const thread of threads) {
         const threadClone = thread.toObject() as DataThread
         if (threadClone.type === ThreadTypes.Direct) {
-          const id = threadClone.members.find((id) => id !== currentUser._id)
-          const receiver = await User.findById(id)
+          const receiverId = threadClone.members.find((id) => {
+            return id !== currentUser._id
+          })
+          const receiver = await User.findById(receiverId)
           threadClone.name = `${receiver?.firstName} ${receiver?.lastName}`
           threadClone.avatar = receiver?.avatar || ''
+          threadClone.slug = receiverId as string
+        } else {
+          threadClone.slug = thread._id.toString()
         }
         dataThreads.push(threadClone)
       }
