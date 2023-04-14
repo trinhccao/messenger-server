@@ -20,7 +20,7 @@ const userController = {
     }
   },
 
-  read: async (req: Request, res: Response) => {
+  user: async (req: Request, res: Response) => {
     try {
       const user = await User.findById(req.params.id, { password: 0 })
       if (!user) {
@@ -32,7 +32,7 @@ const userController = {
     }
   },
 
-  readAll: async (req: Request, res: Response) => {
+  users: async (req: Request, res: Response) => {
     try {
       const users = await User.find({}, { password: 0 })
       res.json(users)

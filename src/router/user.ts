@@ -4,7 +4,7 @@ import userController from '../controllers/user-controller'
 const user = express.Router()
 
 user.post('/', userController.create)
-user.get('/', userController.readAll)
-user.get('/:id', userController.read)
+user.get('/', userController.users)
+user.get('/:id', userController.user)
 
 export default user
