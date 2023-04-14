@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import Thread, { ThreadTypes } from '../models/Thread'
 import { DataThread } from '../interfaces/DataThread'
 import { AuthorizedRequest } from '../interfaces/AuthorizedRequest'
-import { convertToDataThread } from '../helpers/thread-helper'
+import { toDataThread } from '../helpers/thread-helper'
 
 const threadController = {
   threads: async (req: Request, res: Response) => {
@@ -13,7 +13,7 @@ const threadController = {
 
       for await (const thread of threads) {
         const threadOb = thread.toObject() as DataThread
-        const covert = await convertToDataThread(threadOb, currentUserId)
+        const covert = await toDataThread(threadOb, currentUserId)
         dataThreads.push(covert)
       }
 

@@ -49,4 +49,4 @@ const schema = new mongoose.Schema<ThreadSchema>({
   }
 })
 
-export default mongoose.model('Thread', schema) 
+export default mongoose.model('Thread', schema)

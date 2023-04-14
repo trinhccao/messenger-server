@@ -2,7 +2,10 @@ import { DataThread } from '../interfaces/DataThread'
 import { ThreadTypes } from '../models/Thread'
 import User from '../models/User'
 
-async function convertToDataThread(thread: DataThread, currentUserId: string) {
+async function toDataThread(
+  thread: DataThread,
+  currentUserId: string
+) {
   if (thread.type === ThreadTypes.Direct) {
     const receiverId = thread.members.find((id) => {
       return id !== currentUserId
@@ -17,4 +20,4 @@ async function convertToDataThread(thread: DataThread, currentUserId: string) {
   return thread
 }
 
-export { convertToDataThread }
+export { toDataThread }
