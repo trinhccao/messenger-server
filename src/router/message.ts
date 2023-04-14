@@ -1,5 +1,4 @@
 import express from 'express'
-import messageController from '../controllers/message-controller'
 
 const message = express.Router()
 
