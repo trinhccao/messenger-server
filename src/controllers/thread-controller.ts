@@ -8,27 +8,6 @@ const threadController = {
   threads: async (req: Request, res: Response) => {
     try {
       const currentUserId = (req as AuthorizedRequest).user._id
-
-      const paramId = req.query.pid
-      if (paramId) {
-        let thread = await Thread.findById(paramId)
-        if (thread) {
-          const threadOb = thread.toObject() as DataThread
-          const convert = await convertToDataThread(threadOb, currentUserId)
-          return res.json(convert)
-        }
-        thread = await Thread.findOne({
-          members: {
-            $all: [currentUserId, paramId]
-          },
-          type: ThreadTypes.Direct,
-        })
-        if (!thread) { return res.status(404) }
-        const threadOb = thread.toObject() as DataThread
-        const convert = await convertToDataThread(threadOb, currentUserId)
-        return res.json(convert)
-      }
-
       const dataThreads: DataThread[] = []
       const threads = await Thread.find({ members: currentUserId })
 
