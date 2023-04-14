@@ -6,7 +6,8 @@ export enum ThreadTypes {
 }
 
 export enum ThreadScopes {
-  Public = 'public'
+  Any = 'any',
+  Member = 'member'
 }
 
 export interface ThreadSchema {
@@ -44,7 +45,7 @@ const schema = new mongoose.Schema<ThreadSchema>({
   },
   scopes: {
     type: [String],
-    default: [],
+    default: [ThreadScopes.Member],
   }
 })
 
