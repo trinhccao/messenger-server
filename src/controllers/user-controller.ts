@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import User from '../models/User'
-import { verifiedRequest } from '../interfaces/VerifiedRequest'
+import { AuthorizedRequest } from '../interfaces/AuthorizedRequest'
 
 const noPasword = { password: 0 }
 
 const userController = {
   users: async (req: Request, res: Response) => {
     try {
-      const userId = (req as verifiedRequest).user._id
+      const userId = (req as AuthorizedRequest).user._id
       const users = await User.find({ _id: { $ne: userId } }, noPasword)
 
       const query = req.query.name

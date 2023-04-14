@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 
-export interface UserSchema {
-  _id: string
+interface UserSchema {
 	username: string
 	firstName: string
 	lastName: string

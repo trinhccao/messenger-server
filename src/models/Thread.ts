@@ -10,14 +10,13 @@ export enum ThreadScopes {
 }
 
 export interface ThreadSchema {
-  _id: string
   name?: string
   members: string[]
   createdAt: number
   updatedAt: number
   avatar?: string
   type: ThreadTypes
-  scopes?: ThreadScopes[]
+  scopes: ThreadScopes[]
 }
 
 const schema = new mongoose.Schema<ThreadSchema>({

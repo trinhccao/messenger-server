@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-export interface MessageSchema {
+interface MessageSchema {
   threadId: string
   userId: string
   content: string
