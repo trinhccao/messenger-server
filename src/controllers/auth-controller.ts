@@ -5,19 +5,13 @@ import { DataJwtPayload } from '../interfaces/DataJwtPayload'
 import { AuthorizedRequest } from '../interfaces/AuthorizedRequest'
 
 const authController = {
-  authenticate: async (req: Request, res: Response, next: NextFunction) => {
+  verify: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { authorization } = req.headers
-
-      if (!authorization) {
-        throw new Error('Authorization empty')
-      }
-
+      const authorization = req.headers.authorization as string
       const token = authorization.replace(/^Bearer\s/, '')
       const payload = jwt.verify(token, process.env.JWT_SECRET as string)
       const request = req as AuthorizedRequest
       request.user = (payload as DataJwtPayload).user
-
       next()
     } catch (err) {
       res.header('WWW-Authenticate', 'Bearer').sendStatus(401)
@@ -37,7 +31,7 @@ const authController = {
       const token = jwt.sign({ user: user.toObject() }, secret)
       res.json({ token: token, tokenType: 'Bearer', user })
     } catch (err) {
-      res.header('WWW-Authenticate', 'Bearer').sendStatus(401)
+      res.sendStatus(400)
     }
   }
 }
