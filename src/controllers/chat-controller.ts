@@ -5,6 +5,7 @@ import { AuthorizedRequest } from '../interfaces/AuthorizedRequest'
 import { DataThread } from '../interfaces/DataThread'
 import User from '../models/User'
 import Message from '../models/Message'
+import { DataMessage } from '../interfaces/DataMessage'
 
 const chatController = {
   chat: async (req: Request, res: Response) => {
@@ -58,6 +59,23 @@ const chatController = {
     } catch (err) {
       res.sendStatus(400)
     }
+  },
+  conversations: async (req: Request, res: Response) => {
+    const currentUserId = (req as AuthorizedRequest).user._id
+    const threads = await Thread.find({ members: currentUserId })
+    const conversations: { thread: DataThread, messages: DataMessage[] }[] = []
+    for await (const thread of threads) {
+      const messages = await Message.find({
+        threadId: thread._id
+      }) as DataMessage[]
+      const threadOb = thread.toObject() as DataThread
+      const dataThread = await toDataThread(threadOb, currentUserId)
+      conversations.push({
+        thread: dataThread,
+        messages: messages as DataMessage[]
+      })
+    }
+    res.json(conversations)
   }
 }
 

@@ -4,6 +4,7 @@ import chatController from '../controllers/chat-controller'
 const chat = express.Router()
 
 chat.get('/messages', chatController.messages)
+chat.get('/conversations', chatController.conversations)
 chat.get('/:id', chatController.chat)
 
 export default chat
