@@ -76,6 +76,40 @@ const chatController = {
       })
     }
     res.json(conversations)
+  },
+  sendMessage: async (req: Request, res: Response) => {
+    try {
+      const paramId = req.params.id
+      const currentUserId = (req as AuthorizedRequest).user._id
+      const content = req.body.message
+
+      if (!content) {
+        throw new Error('Message is empty')
+      }
+
+      let thread = await Thread.findById(paramId)
+      if (!thread) {
+        thread = await Thread.findOne({
+          members: { $all: [paramId, currentUserId] },
+          type: ThreadTypes.Direct,
+        })
+      }
+
+      if (!thread) {
+        throw new Error('Thread not found')
+      }
+
+      const message = await Message.create({
+        threadId: thread.id,
+        userId: currentUserId,
+        content,
+        createdAt: Date.now(),
+      })
+
+      res.json(message)
+    } catch (err) {
+      return res.sendStatus(400)
+    }
   }
 }
 
