@@ -75,7 +75,7 @@ const chatController = {
         messages: messages as DataMessage[]
       })
     }
-    res.json(conversations)
+    res.json(conversations.filter((item) => item.messages.length))
   },
   sendMessage: async (req: Request, res: Response) => {
     try {
