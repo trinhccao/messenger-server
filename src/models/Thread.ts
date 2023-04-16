@@ -1,4 +1,4 @@
-import mongoose, { Document, Types } from 'mongoose'
+import mongoose from 'mongoose'
 
 export enum ThreadTypes {
   Direct = 'direct',
@@ -10,6 +10,12 @@ export enum ThreadScopes {
   Member = 'member'
 }
 
+export interface ThreadMessageSchema {
+  userId: string
+  content: string
+  createdAt: number
+}
+
 export interface ThreadSchema {
   name?: string
   members: string[]
@@ -18,18 +24,15 @@ export interface ThreadSchema {
   avatar?: string
   type: ThreadTypes
   scopes: ThreadScopes[]
+  messages: ThreadMessageSchema[]
 }
 
-export type ThreadDocument = Document<unknown, {}, ThreadSchema>
-  & Omit<ThreadSchema & { _id: Types.ObjectId }, never>
-
-const schema = new mongoose.Schema<ThreadSchema>({
+const threadSchema = new mongoose.Schema({
   name: {
     type: String,
   },
   members: {
-    type: [String],
-    default: [],
+    type: [String]
   },
   createdAt: {
     type: Number,
@@ -49,7 +52,24 @@ const schema = new mongoose.Schema<ThreadSchema>({
   scopes: {
     type: [String],
     default: [ThreadScopes.Member],
-  }
+  },
+  messages: [
+    {
+      userId: {
+        type: String,
+        required: true,
+      },
+      content: {
+        type: String,
+        required: true,
+      },
+      createdAt: {
+        type: Number,
+        required: true,
+      },
+    }
+  ]
 })
 
-export default mongoose.model('Thread', schema)
+export default mongoose.model('Thread', threadSchema)
+export { threadSchema }

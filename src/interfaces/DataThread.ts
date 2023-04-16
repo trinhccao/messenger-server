@@ -1,4 +1,8 @@
-import { ThreadScopes, ThreadTypes } from '../models/Thread'
+import {
+  ThreadMessageSchema,
+  ThreadScopes,
+  ThreadTypes,
+} from '../models/Thread'
 
 export interface DataThread {
   slug: string
@@ -10,4 +14,5 @@ export interface DataThread {
   avatar?: string
   type: ThreadTypes
   scopes: ThreadScopes[]
+  messages: ThreadMessageSchema[]
 }

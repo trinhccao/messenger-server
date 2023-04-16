@@ -1,25 +1,35 @@
+import { Document } from 'mongoose'
 import { DataThread } from '../interfaces/DataThread'
-import { ThreadDocument, ThreadTypes } from '../models/Thread'
+import { ThreadTypes } from '../models/Thread'
 import User from '../models/User'
 
-async function toDataThread(thread: ThreadDocument, clientId: string) {
+async function toDataThread(thread: Document, clientId: string) {
   const dataThread = thread.toObject() as DataThread
 
-  if (dataThread.type === ThreadTypes.Direct) {
-    const receiverId = dataThread.members.find((id) => id !== clientId)
-    if (!receiverId) {
+  switch (dataThread.type) {
+    case ThreadTypes.Direct: {
+      const receiverId = dataThread.members.find((id) => id !== clientId)
+      if (!receiverId) {
+        return
+      }
+      const receiver = await User.findById(receiverId)
+      if (!receiver) {
+        return
+      }
+      dataThread.name = `${receiver.firstName} ${receiver.lastName}`
+      dataThread.avatar = receiver.avatar
+      dataThread.slug = receiverId
+      break
+    }
+    case ThreadTypes.Group: {
+      dataThread.slug = dataThread._id.toString()
+      break
+    }
+    default: {
       return
     }
-    const receiver = await User.findById(receiverId)
-    if (!receiver) {
-      return
-    }
-    dataThread.name = `${receiver.firstName} ${receiver.lastName}`
-    dataThread.avatar = receiver.avatar
-    dataThread.slug = receiverId
-  } else {
-    dataThread.slug = dataThread._id.toString()
   }
+
   return dataThread
 }
 
