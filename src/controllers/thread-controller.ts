@@ -98,6 +98,7 @@ const threadController = {
         content,
         createdAt: Date.now(),
       })
+      thread.updatedAt = Date.now()
       await thread.save()
       res.status(201).json(thread.messages.slice(-1)[0])
     } catch (err) {
