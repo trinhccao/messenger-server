@@ -41,47 +41,6 @@ const threadController = {
       res.sendStatus(403)
     }
   },
-  createDirect: async (req: Request, res: Response) => {
-    try {
-      const creator = (req as AuthorizedRequest).user
-      const member = await User.findById(req.body.memberId)
-      if (!member) {
-        throw new Error('User not found')
-      }
-      const now = Date.now()
-      const thread = await Thread.create({
-        members: [creator._id, member._id],
-        createdAt: now,
-        updatedAt: now,
-        type: ThreadTypes.Direct,
-        scopes: [ThreadScopes.Member],
-      })
-      res.status(201).json(thread)
-    } catch (err) {
-      res.sendStatus(400)
-    }
-  },
-  createGroup: async (req: Request, res: Response) => {
-    try {
-      const creator = (req as AuthorizedRequest).user
-      const name = req.body.name
-      if (!name || typeof name !== 'string') {
-        throw new Error('Name is invalid')
-      }
-      const now = Date.now()
-      const thread = await Thread.create({
-        name: name,
-        members: [creator._id],
-        createdAt: now,
-        updatedAt: now,
-        type: ThreadTypes.Group,
-        scopes: [ThreadScopes.Any],
-      })
-      res.status(201).json(thread)
-    } catch (err) {
-      res.sendStatus(400)
-    }
-  },
   addMessage: async (req: Request, res: Response) => {
     try {
       const content = req.body.message

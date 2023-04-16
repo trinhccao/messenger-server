@@ -39,7 +39,7 @@ const chatController = {
         scopes: [ThreadScopes.Member],
       })
       const convert = await toDataThread(newThread, client._id)
-      res.send(convert)
+      res.json(convert)
     } catch (err) {
       res.sendStatus(400)
     }
