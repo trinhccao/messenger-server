@@ -10,7 +10,9 @@ const threadController = {
     try {
       const dataThreads: DataThread[] = []
       const client = (req as AuthorizedRequest).user
-      const threads = await Thread.find({ members: client._id })
+      const threads = await Thread
+        .find({ members: client._id })
+        .sort({ updatedAt: 'desc' })
       for await (const thread of threads) {
         const covert = await toDataThread(thread, client._id)
         covert && dataThreads.push(covert)
