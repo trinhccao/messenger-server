@@ -11,6 +11,7 @@ export enum ThreadScopes {
 }
 
 export interface ThreadMessageSchema {
+  threadId: string
   userId: string
   content: string
   createdAt: number
@@ -55,6 +56,10 @@ const threadSchema = new mongoose.Schema({
   },
   messages: [
     {
+      threadId: {
+        type: String,
+        required: true,
+      },
       userId: {
         type: String,
         required: true,
