@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { Document, Types } from 'mongoose'
 
 export enum ThreadTypes {
   Direct = 'direct',
@@ -19,6 +19,9 @@ export interface ThreadSchema {
   type: ThreadTypes
   scopes: ThreadScopes[]
 }
+
+export type ThreadDocument = Document<unknown, {}, ThreadSchema>
+  & Omit<ThreadSchema & { _id: Types.ObjectId }, never>
 
 const schema = new mongoose.Schema<ThreadSchema>({
   name: {

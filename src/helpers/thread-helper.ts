@@ -1,23 +1,26 @@
 import { DataThread } from '../interfaces/DataThread'
-import { ThreadTypes } from '../models/Thread'
+import { ThreadDocument, ThreadTypes } from '../models/Thread'
 import User from '../models/User'
 
-async function toDataThread(
-  thread: DataThread,
-  currentUserId: string
-) {
-  if (thread.type === ThreadTypes.Direct) {
-    const receiverId = thread.members.find((id) => {
-      return id !== currentUserId
-    })
+async function toDataThread(thread: ThreadDocument, clientId: string) {
+  const dataThread = thread.toObject() as DataThread
+
+  if (dataThread.type === ThreadTypes.Direct) {
+    const receiverId = dataThread.members.find((id) => id !== clientId)
+    if (!receiverId) {
+      return
+    }
     const receiver = await User.findById(receiverId)
-    thread.name = `${receiver?.firstName} ${receiver?.lastName}`
-    thread.avatar = receiver?.avatar || ''
-    thread.slug = receiverId as string
+    if (!receiver) {
+      return
+    }
+    dataThread.name = `${receiver.firstName} ${receiver.lastName}`
+    dataThread.avatar = receiver.avatar
+    dataThread.slug = receiverId
   } else {
-    thread.slug = thread._id.toString()
+    dataThread.slug = dataThread._id.toString()
   }
-  return thread
+  return dataThread
 }
 
 export { toDataThread }

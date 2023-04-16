@@ -7,7 +7,7 @@ export interface DataThread {
   members: string[]
   createdAt: number
   updatedAt: number
-  avatar: string
+  avatar?: string
   type: ThreadTypes
   scopes: ThreadScopes[]
 }
