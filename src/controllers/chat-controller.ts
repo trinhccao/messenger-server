@@ -3,6 +3,7 @@ import Thread, { ThreadScopes, ThreadTypes } from '../models/Thread'
 import { AuthorizedRequest } from '../interfaces/AuthorizedRequest'
 import User from '../models/User'
 import { toDataThread } from '../helpers/thread-helper'
+import generateDirectId from '../helpers/generate-direct-id'
 
 const chatController = {
   findThreadId: async (req: Request, res: Response) => {
@@ -31,6 +32,7 @@ const chatController = {
       const now = Date.now()
       const newThread = await Thread.create({
         members: [client._id, user._id],
+        directId: generateDirectId(client._id, user.id),
         createdAt: now,
         updatedAt: now,
         type: ThreadTypes.Direct,

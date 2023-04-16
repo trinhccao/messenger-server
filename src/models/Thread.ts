@@ -18,6 +18,7 @@ export interface ThreadMessageSchema {
 }
 
 export interface ThreadSchema {
+  directId?: string
   name?: string
   members: string[]
   createdAt: number
@@ -29,6 +30,11 @@ export interface ThreadSchema {
 }
 
 const threadSchema = new mongoose.Schema({
+  directId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   name: {
     type: String,
   },
