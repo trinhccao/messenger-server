@@ -9,6 +9,9 @@ const chatController = {
     try {
       const client = (req as AuthorizedRequest).user
       const slug = req.params.slug
+      if (slug === client._id) {
+        throw new Error('Access your self')
+      }
       const thread = await Thread.findOne({
         $or: [
           { _id: slug },

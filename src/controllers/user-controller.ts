@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import User from '../models/User'
+import { AuthorizedRequest } from '../interfaces/AuthorizedRequest'
 
 const userController = {
   create: async (req: Request, res: Response) => {
@@ -34,7 +35,11 @@ const userController = {
 
   users: async (req: Request, res: Response) => {
     try {
-      const users = await User.find({}, { password: 0 })
+      const client = (req as AuthorizedRequest).user
+      const users = await User.find(
+        { _id: { $ne: client._id } },
+        { password: 0 }
+      )
       res.json(users)
     } catch (err) {
       res.sendStatus(400)
