@@ -39,6 +39,27 @@ const threadController = {
     } catch (err) {
       res.sendStatus(400)
     }
+  },
+  createGroup: async (req: Request, res: Response) => {
+    try {
+      const creator = (req as AuthorizedRequest).user
+      const name = req.body.name
+      if (!name || typeof name !== 'string') {
+        throw new Error('Name is invalid')
+      }
+      const now = Date.now()
+      const thread = await Thread.create({
+        name: name,
+        members: [creator._id],
+        createdAt: now,
+        updatedAt: now,
+        type: ThreadTypes.Group,
+        scopes: [ThreadScopes.Any],
+      })
+      res.status(201).json(thread)
+    } catch (err) {
+      res.sendStatus(400)
+    }
   }
 }
 
