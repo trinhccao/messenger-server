@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
-import Thread, { ThreadScopes, ThreadTypes } from '../models/Thread'
+import Thread, { ThreadScopes } from '../models/Thread'
 import { DataThread } from '../interfaces/DataThread'
 import { AuthorizedRequest } from '../interfaces/AuthorizedRequest'
 import { toDataThread } from '../helpers/thread-helper'
-import User from '../models/User'
 
 const threadController = {
   findAll: async (req: Request, res: Response) => {

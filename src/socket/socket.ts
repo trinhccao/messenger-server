@@ -2,6 +2,7 @@ import { Server, Socket } from 'socket.io'
 import { createServer } from 'node:http'
 import jwt from 'jsonwebtoken'
 import { DataUser } from '../interfaces/DataUser'
+import { ThreadMessageSchema } from '../models/Thread'
 
 interface DataJwtPayload {
   iat: number
@@ -38,5 +39,9 @@ io.on('connection', (socket) => {
       const seflExcluded = clients.filter((id) => id !== (item as any).userId)
       item.emit('clients', seflExcluded)
     })
+  })
+
+  socket.on('message', (data: ThreadMessageSchema) => {
+    socket.broadcast.emit('message', data)
   })
 })

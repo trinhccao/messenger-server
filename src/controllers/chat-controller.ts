@@ -23,13 +23,15 @@ const chatController = {
         ]
       })
       if (thread) {
-        return res.send(thread.id)
+        const convert = await toDataThread(thread, client._id)
+        return res.json(convert)
       }
       const user = await User.findById(slug)
       if (!user) {
         return res.sendStatus(404)
       }
       const now = Date.now()
+      await Thread.ensureIndexes()
       const newThread = await Thread.create({
         members: [client._id, user._id],
         directId: generateDirectId(client._id, user.id),
