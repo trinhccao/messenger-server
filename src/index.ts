@@ -4,6 +4,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import router from './router/root'
+import './socket/socket'
 
 dotenv.config()
 
@@ -18,9 +19,8 @@ mongoose
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log('MongoDB error: ', err))
 
-const server = app.listen(process.env.APP_PORT, () => {
-  console.log(`[Server is running on port: ${process.env.APP_PORT}]`)
-})
+const status = `[Server is running on port: ${process.env.APP_PORT}]`
+app.listen(process.env.APP_PORT, () => console.log(status))
 app.disable('x-powered-by')
 app.use(cors())
 app.use(bodyParser.json())
