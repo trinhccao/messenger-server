@@ -67,12 +67,14 @@ const threadController = {
   },
   findById: async (req: Request, res: Response) => {
     try {
+      const client = (req as AuthorizedRequest).user
       const id = req.params.id
       const thread = await Thread.findById(id)
       if (!thread) {
         throw new Error('Thread not found')
       }
-      res.json(thread)
+      const convert = await toDataThread(thread, client._id)
+      res.json(convert)
     } catch (err) {
       res.sendStatus(400)
     }
