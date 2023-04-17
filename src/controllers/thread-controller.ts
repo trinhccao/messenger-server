@@ -106,6 +106,18 @@ const threadController = {
     } catch (err) {
       res.sendStatus(400)
     }
+  },
+  findById: async (req: Request, res: Response) => {
+    try {
+      const id = req.params.id
+      const thread = await Thread.findById(id)
+      if (!thread) {
+        throw new Error('Thread not found')
+      }
+      res.json(thread)
+    } catch (err) {
+      res.sendStatus(400)
+    }
   }
 }
 

@@ -6,6 +6,7 @@ const thread = express.Router()
 thread.get('/', threadController.findAll)
 thread.use('/:id', threadController.verify)
 thread.post('/:id', threadController.addMessage)
+thread.get('/:id', threadController.findById)
 thread.post('/direct', threadController.createDirect)
 thread.post('/group', threadController.createGroup)
 
