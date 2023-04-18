@@ -10,7 +10,7 @@ const threadController = {
       const dataThreads: DataThread[] = []
       const client = (req as AuthorizedRequest).user
       const threads = await Thread
-        .find({ members: client._id })
+        .find({ $or: [{ members: client._id }, { scopes: ThreadScopes.Any }] })
         .sort({ updatedAt: 'desc' })
       for await (const thread of threads) {
         const covert = await toDataThread(thread, client._id)
@@ -62,6 +62,7 @@ const threadController = {
       await thread.save()
       res.status(201).json(thread.messages.slice(-1)[0])
     } catch (err) {
+      console.log(err)
       res.sendStatus(400)
     }
   },
