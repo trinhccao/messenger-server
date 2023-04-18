@@ -26,7 +26,7 @@ io.use((socket, next) => {
 
 io.on('connection', (socket) => {
   const userId = (socket as any).userId as string
-  clients.push(userId)
+  clients.unshift(userId)
 
   io.sockets.sockets.forEach((item) => {
     const seflExcluded = clients.filter((id) => id !== (item as any).userId)
