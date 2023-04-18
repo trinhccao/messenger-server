@@ -37,6 +37,10 @@ const authController = {
 
   register: async (req: Request, res: Response) => {
     try {
+      const user = await User.findOne({ username: req.body.username })
+      if (user) {
+        return res.sendStatus(409)
+      }
       const data = {
         username: req.body.username,
         firstName: req.body.firstName,
